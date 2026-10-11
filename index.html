@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تقييم تطبيق دليل جواده</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #121212;
+            color: #e0e0e0;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .rating-card {
+            background: #1e1e1e;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+            border: 1px solid #2a2a2a;
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+        h2 {
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #a0a0a0;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        /* تصميم النجوم البارزة */
+        .stars {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+        .stars input {
+            display: none;
+        }
+        .stars label {
+            font-size: 42px;
+            color: #3f3f46;
+            cursor: pointer;
+            transition: color 0.2s ease, transform 0.2s ease;
+            text-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+        .stars label:hover,
+        .stars label:hover ~ label,
+        .stars input:checked ~ label {
+            color: #ffb703;
+            text-shadow: 0 0 12px rgba(255, 183, 3, 0.6);
+        }
+        .stars label:hover {
+            transform: scale(1.15);
+        }
+
+        /* حقول الإدخال */
+        .form-group {
+            margin-bottom: 18px;
+            text-align: right;
+        }
+        label.input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #cccccc;
+            font-size: 14px;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background-color: #2b2b2b;
+            border: 1px solid #3d3d3d;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        input[type="text"]::placeholder, textarea::placeholder {
+            color: #777777;
+        }
+        input[type="text"]:focus, textarea:focus {
+            border-color: #ffb703;
+            box-shadow: 0 0 8px rgba(255, 183, 3, 0.3);
+        }
+        textarea {
+            resize: vertical;
+            height: 110px;
+        }
+
+        /* زر الإرسال */
+        button {
+            background-color: #ffb703;
+            color: #121212;
+            border: none;
+            padding: 14px 20px;
+            width: 100%;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s, transform 0.1s;
+        }
+        button:hover {
+            background-color: #ffa200;
+        }
+        button:active {
+            transform: scale(0.98);
+        }
+
+        /* رسالة النجاح */
+        #success-msg {
+            display: none;
+            color: #4ade80;
+            background-color: rgba(74, 222, 128, 0.1);
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            padding: 10px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="rating-card">
+        <h2>تقييم تطبيق دليل جواده</h2>
+        <p>رأيك يهمنا! نرجو تقييم تجربتك وترك تعليقك لتحسين التطبيق.</p>
+        
+        <!-- رابط Formspree الخاص بك -->
+        <form id="ratingForm" action="https://formspree.io/f/mzedvajl" method="POST">
+            
+            <!-- نجوم التقييم -->
+            <div class="stars">
+                <input type="radio" id="star5" name="rating" value="5" required><label for="star5" title="5 نجوم">★</label>
+                <input type="radio" id="star4" name="rating" value="4"><label for="star4" title="4 نجوم">★</label>
+                <input type="radio" id="star3" name="rating" value="3"><label for="star3" title="3 نجوم">★</label>
+                <input type="radio" id="star2" name="rating" value="2"><label for="star2" title="2 نجوم">★</label>
+                <input type="radio" id="star1" name="rating" value="1"><label for="star1" title="نجمة واحدة">★</label>
+            </div>
+
+            <div class="form-group">
+                <label class="input-label" for="name">اسمك (اختياري)</label>
+                <input type="text" id="name" name="name" placeholder="اكتب اسمك هنا...">
+            </div>
+
+            <div class="form-group">
+                <label class="input-label" for="comment">تعليقك أو ملاحظاتك</label>
+                <textarea id="comment" name="comment" placeholder="اكتب رأيك عن التطبيق هنا..." required></textarea>
+            </div>
+
+            <button type="submit">إرسال التقييم</button>
+            <div id="success-msg">شكراً لك! تم إرسال تقييمك بنجاح.</div>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('ratingForm');
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const data = new FormData(form);
+            const response = await fetch(e.target.action, {
+                method: form.method,
+                body: data,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+            if (response.ok) {
+                form.reset();
+                document.getElementById('success-msg').style.display = 'block';
+            } else {
+                alert('حدث خطأ أثناء الإرسال، يرجى المحاولة مرة أخرى.');
+            }
+        });
+    </script>
+
+</body>
+</html>
